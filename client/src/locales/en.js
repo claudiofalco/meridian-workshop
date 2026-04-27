@@ -6,8 +6,70 @@ export default {
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    reports: 'Reports',
+    restocking: 'Restocking',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
+  },
+
+  // Reports
+  reports: {
+    title: 'Performance Reports',
+    description: 'View quarterly performance metrics and monthly trends',
+    loading: 'Loading reports...',
+    quarterly: {
+      title: 'Quarterly Performance',
+      quarter: 'Quarter',
+      totalOrders: 'Total Orders',
+      totalRevenue: 'Total Revenue',
+      avgOrderValue: 'Avg Order Value',
+      fulfillmentRate: 'Fulfillment Rate'
+    },
+    monthlyTrend: {
+      title: 'Monthly Revenue Trend'
+    },
+    monthOverMonth: {
+      title: 'Month-over-Month Analysis',
+      month: 'Month',
+      orders: 'Orders',
+      revenue: 'Revenue',
+      change: 'Change',
+      growthRate: 'Growth Rate'
+    },
+    stats: {
+      totalRevenueYTD: 'Total Revenue (YTD)',
+      avgMonthlyRevenue: 'Avg Monthly Revenue',
+      totalOrdersYTD: 'Total Orders (YTD)',
+      bestQuarter: 'Best Performing Quarter'
+    }
+  },
+
+  // Restocking Recommendations
+  restocking: {
+    title: 'Restocking Recommendations',
+    description: 'Purchase order recommendations based on stock levels and demand forecasts',
+    budgetLabel: 'Budget Ceiling (USD)',
+    budgetPlaceholder: 'No limit',
+    itemsNeedingRestock: 'Items Needing Restock',
+    withinBudget: 'Within Budget',
+    totalCost: 'Total Cost',
+    budgetRemaining: 'Budget Remaining',
+    noItems: 'No items currently below reorder point',
+    urgent: 'Urgent',
+    withinBudgetBadge: 'Within Budget',
+    overBudget: 'Over Budget',
+    table: {
+      sku: 'SKU',
+      product: 'Product',
+      warehouse: 'Warehouse',
+      currentStock: 'Current Stock',
+      reorderPoint: 'Reorder Point',
+      recommendedQty: 'Rec. Qty',
+      unitCost: 'Unit Cost',
+      estimatedCost: 'Est. Cost',
+      trend: 'Trend',
+      status: 'Status'
+    }
   },
 
   // Dashboard

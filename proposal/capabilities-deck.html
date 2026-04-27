@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian Components — Capabilities Presentation</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 32px;
+  }
+
+  .deck { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 24px; }
+
+  .slide {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 48px 56px;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .slide-number {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .slide-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #38bdf8;
+    margin-bottom: 16px;
+  }
+
+  h1 { font-size: 40px; font-weight: 700; line-height: 1.15; color: #f8fafc; }
+  h2 { font-size: 28px; font-weight: 700; color: #f8fafc; margin-bottom: 20px; }
+  h3 { font-size: 18px; font-weight: 600; color: #f8fafc; margin-bottom: 8px; }
+
+  .subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+
+  .meta {
+    font-size: 14px;
+    color: #64748b;
+    margin-top: 24px;
+  }
+
+  p { color: #cbd5e1; line-height: 1.65; font-size: 16px; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 8px; }
+
+  .card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .card p { font-size: 14px; color: #94a3b8; margin-top: 6px; }
+
+  .badge {
+    display: inline-block;
+    background: #0ea5e9;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  .badge.green { background: #16a34a; }
+  .badge.amber { background: #d97706; }
+  .badge.purple { background: #7c3aed; }
+
+  .req-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #1e293b;
+  }
+  .req-row:last-child { border-bottom: none; }
+  .req-id {
+    font-size: 13px;
+    font-weight: 700;
+    color: #38bdf8;
+    min-width: 32px;
+    padding-top: 2px;
+  }
+  .req-body h3 { font-size: 15px; margin-bottom: 4px; }
+  .req-body p { font-size: 14px; }
+
+  .timeline-row {
+    display: flex;
+    gap: 0;
+    margin-top: 16px;
+  }
+  .phase {
+    flex: 1;
+    text-align: center;
+    padding: 14px 8px;
+    background: #0f172a;
+    border: 1px solid #334155;
+    font-size: 13px;
+  }
+  .phase:first-child { border-radius: 8px 0 0 8px; }
+  .phase:last-child { border-radius: 0 8px 8px 0; }
+  .phase .wk { font-size: 11px; color: #64748b; margin-bottom: 4px; }
+  .phase .ph { font-weight: 600; color: #f8fafc; font-size: 13px; }
+  .phase .del { font-size: 11px; color: #38bdf8; margin-top: 4px; }
+  .phase.highlight { background: #0369a1; border-color: #0ea5e9; }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #1e293b;
+    font-size: 15px;
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row .item { color: #cbd5e1; }
+  .price-row .amount { font-weight: 700; color: #f8fafc; font-size: 16px; }
+  .price-row.total { margin-top: 8px; padding-top: 20px; border-top: 2px solid #334155; }
+  .price-row.total .item { color: #f8fafc; font-weight: 700; font-size: 17px; }
+  .price-row.total .amount { color: #38bdf8; font-size: 22px; }
+
+  .why-us { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+  .why-card {
+    background: #0f172a;
+    border-left: 3px solid #0ea5e9;
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+  }
+  .why-card h3 { font-size: 15px; margin-bottom: 6px; }
+  .why-card p { font-size: 14px; color: #94a3b8; }
+
+  .closing-stat {
+    text-align: center;
+    padding: 20px;
+  }
+  .closing-stat .number { font-size: 48px; font-weight: 800; color: #38bdf8; line-height: 1; }
+  .closing-stat .label { font-size: 14px; color: #64748b; margin-top: 6px; }
+
+  nav {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #64748b;
+    padding: 8px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- Slide 1: Title -->
+  <div class="slide">
+    <span class="slide-number">1 / 12</span>
+    <div class="slide-label">Capabilities Presentation</div>
+    <h1>Modernizing the Meridian Inventory Dashboard</h1>
+    <p class="subtitle">A proposal to remediate, extend, and future-proof your operations platform</p>
+    <p class="meta">RFP MC-2026-0417 &nbsp;·&nbsp; April 27, 2026</p>
+  </div>
+
+  <!-- Slide 2: Who We Are -->
+  <div class="slide">
+    <span class="slide-number">2 / 12</span>
+    <div class="slide-label">About Us</div>
+    <h2>We build and fix operations software</h2>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Focused practice</h3>
+        <p>Inventory, supply chain, and warehouse tools for mid-market distributors.</p>
+      </div>
+      <div class="card">
+        <h3>Full-stack delivery</h3>
+        <p>Frontend, backend, testing, and documentation — no handoffs between teams.</p>
+      </div>
+      <div class="card">
+        <h3>Fixed-fee only</h3>
+        <p>We quote fixed fees because we've scoped the work. No T&M surprises.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 3: The Problem -->
+  <div class="slide">
+    <span class="slide-number">3 / 12</span>
+    <div class="slide-label">The Problem</div>
+    <h2>Your dashboard can't safely move forward</h2>
+    <p style="margin-bottom: 24px;">The previous vendor left three structural blockers:</p>
+    <div class="grid-3">
+      <div class="card">
+        <span class="badge amber">Defects</span>
+        <h3>Reports module</h3>
+        <p>8+ known bugs — filters unwired, i18n gaps, inconsistent data patterns.</p>
+      </div>
+      <div class="card">
+        <span class="badge amber">Missing</span>
+        <h3>Restocking view</h3>
+        <p>VP Operations has been waiting. No way to generate purchase recommendations today.</p>
+      </div>
+      <div class="card">
+        <span class="badge amber">Blocked</span>
+        <h3>No test coverage</h3>
+        <p>IT won't approve changes. Every future improvement is stuck behind this.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Our Understanding -->
+  <div class="slide">
+    <span class="slide-number">4 / 12</span>
+    <div class="slide-label">Our Understanding</div>
+    <h2>We've read the code, not just the RFP</h2>
+    <p style="margin-bottom: 24px;">Before writing this proposal we reviewed the source code and the previous vendor's handoff. Key findings:</p>
+    <div class="req-row">
+      <div class="req-id">✓</div>
+      <div class="req-body"><h3>Stack is sound</h3><p>Vue 3 / FastAPI / flat JSON — clean, modern, no legacy debt to untangle.</p></div>
+    </div>
+    <div class="req-row">
+      <div class="req-id">✓</div>
+      <div class="req-body"><h3>Demand data exists</h3><p>The <code style="color:#38bdf8">/api/demand</code> endpoint is already in place — R2 builds on something real.</p></div>
+    </div>
+    <div class="req-row">
+      <div class="req-id">⚠</div>
+      <div class="req-body"><h3>Handoff docs are thin</h3><p>The previous vendor's documentation can't be relied on. We'll produce our own architecture overview as R4.</p></div>
+    </div>
+  </div>
+
+  <!-- Slide 5: Scope -->
+  <div class="slide">
+    <span class="slide-number">5 / 12</span>
+    <div class="slide-label">Scope of Work</div>
+    <h2>Four required deliverables</h2>
+    <div class="req-row">
+      <div class="req-id">R1</div>
+      <div class="req-body"><h3>Reports remediation</h3><p>Audit and resolve all items in Meridian's defect log, plus anything discovered during our own review.</p></div>
+    </div>
+    <div class="req-row">
+      <div class="req-id">R2</div>
+      <div class="req-body"><h3>Restocking recommendations</h3><p>New view: stock levels + demand forecast + budget ceiling → purchase order list.</p></div>
+    </div>
+    <div class="req-row">
+      <div class="req-id">R3</div>
+      <div class="req-body"><h3>Browser test suite</h3><p>Playwright coverage across all four critical flows. IT can run it independently.</p></div>
+    </div>
+    <div class="req-row">
+      <div class="req-id">R4</div>
+      <div class="req-body"><h3>Architecture documentation</h3><p>Current-state overview with visual diagram, suitable for IT handoff and long-term ownership.</p></div>
+    </div>
+  </div>
+
+  <!-- Slide 6: R1 Approach -->
+  <div class="slide">
+    <span class="slide-number">6 / 12</span>
+    <div class="slide-label">R1 — Reports Remediation</div>
+    <h2>Fix the Reports module, completely</h2>
+    <div class="grid-2">
+      <div>
+        <p style="margin-bottom: 20px;">We'll audit against the defect log and the codebase patterns — not just patch the listed items but close anything we find.</p>
+        <p><strong style="color:#f8fafc">Defect categories:</strong></p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: #94a3b8; line-height: 2; font-size: 14px;">
+          <li>Filter wiring (Time Period, Warehouse, Category, Status)</li>
+          <li>Internationalization gaps (numbers, dates, strings)</li>
+          <li>Options API → Composition API migration</li>
+          <li>Console errors and runtime warnings</li>
+        </ul>
+      </div>
+      <div class="card" style="justify-content: center; display: flex; flex-direction: column; gap: 12px;">
+        <p style="color: #38bdf8; font-weight: 600; font-size: 14px;">Our commitment</p>
+        <p>"All defects found" — not a fixed list. If we find more than Meridian logged, we fix them too.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: R2 Approach -->
+  <div class="slide">
+    <span class="slide-number">7 / 12</span>
+    <div class="slide-label">R2 — Restocking Recommendations</div>
+    <h2>Give operations the tool they've been waiting for</h2>
+    <div class="grid-2">
+      <div>
+        <p style="margin-bottom: 20px;">The Restocking view will let your operations team set a budget ceiling and receive a ranked purchase order list — per SKU, per warehouse, per supplier.</p>
+        <p><strong style="color:#f8fafc">How it works:</strong></p>
+        <ul style="margin-top: 12px; padding-left: 20px; color: #94a3b8; line-height: 2; font-size: 14px;">
+          <li>Compare current stock to demand forecast</li>
+          <li>Identify at-risk SKUs by warehouse</li>
+          <li>Rank recommendations by urgency</li>
+          <li>Apply budget ceiling, regenerate on change</li>
+        </ul>
+      </div>
+      <div class="card" style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <p style="color: #38bdf8; font-weight: 600; font-size: 14px; margin-bottom: 6px;">Data first</p>
+          <p style="font-size: 14px;">We'll validate the existing <code style="color:#38bdf8">/api/demand</code> data in Week 1 before building on it. No surprises mid-project.</p>
+        </div>
+        <div>
+          <p style="color: #38bdf8; font-weight: 600; font-size: 14px; margin-bottom: 6px;">Fits the existing UI</p>
+          <p style="font-size: 14px;">Built with the same Vue patterns and filters as the rest of the dashboard.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8: R3 Approach -->
+  <div class="slide">
+    <span class="slide-number">8 / 12</span>
+    <div class="slide-label">R3 — Automated Testing</div>
+    <h2>Unblock IT. Make future changes safe.</h2>
+    <p style="margin-bottom: 24px;">Test coverage isn't just a deliverable — it's what makes the rest of this engagement stick. We build tests alongside the code, not after.</p>
+    <div class="grid-2">
+      <div class="card">
+        <span class="badge">Playwright</span>
+        <h3>Industry-standard tooling</h3>
+        <p>End-to-end browser tests that run headless in CI or locally. No exotic dependencies.</p>
+      </div>
+      <div class="card">
+        <span class="badge green">All 4 flows</span>
+        <h3>Complete critical coverage</h3>
+        <p>Inventory browsing, order filtering, Reports page, and the new Restocking feature.</p>
+      </div>
+      <div class="card">
+        <span class="badge purple">Handoff-ready</span>
+        <h3>IT can run it independently</h3>
+        <p>Documented setup and execution. Your team won't need us to run the tests.</p>
+      </div>
+      <div class="card">
+        <h3>Delivered with the code</h3>
+        <p>Tests are part of every pull request — not added at the end as an afterthought.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 9: Timeline -->
+  <div class="slide">
+    <span class="slide-number">9 / 12</span>
+    <div class="slide-label">Timeline</div>
+    <h2>8 weeks to full delivery</h2>
+    <div class="timeline-row">
+      <div class="phase highlight">
+        <div class="wk">Wks 1–2</div>
+        <div class="ph">Onboarding</div>
+        <div class="del">R4 delivered</div>
+      </div>
+      <div class="phase">
+        <div class="wk">Wks 3–4</div>
+        <div class="ph">Reports fix</div>
+        <div class="del">R1 delivered</div>
+      </div>
+      <div class="phase">
+        <div class="wk">Wks 5–6</div>
+        <div class="ph">Restocking</div>
+        <div class="del">R2 delivered</div>
+      </div>
+      <div class="phase">
+        <div class="wk">Week 7</div>
+        <div class="ph">Test suite</div>
+        <div class="del">R3 delivered</div>
+      </div>
+      <div class="phase">
+        <div class="wk">Week 8</div>
+        <div class="ph">Handoff</div>
+        <div class="del">Close</div>
+      </div>
+    </div>
+    <p style="margin-top: 24px; font-size: 14px; color: #64748b;">Architecture documentation (R4) is delivered first — in Week 2 — because it orients the rest of the engagement and satisfies IT's need for visibility early.</p>
+  </div>
+
+  <!-- Slide 10: Pricing -->
+  <div class="slide">
+    <span class="slide-number">10 / 12</span>
+    <div class="slide-label">Pricing</div>
+    <h2>Fixed fee. No surprises.</h2>
+    <div class="grid-2">
+      <div>
+        <div class="price-row"><span class="item">R1 — Reports remediation</span><span class="amount">$12,000</span></div>
+        <div class="price-row"><span class="item">R2 — Restocking feature</span><span class="amount">$16,000</span></div>
+        <div class="price-row"><span class="item">R3 — Browser test suite</span><span class="amount">$8,000</span></div>
+        <div class="price-row"><span class="item">R4 — Architecture docs</span><span class="amount">$4,000</span></div>
+        <div class="price-row total"><span class="item">Required scope total</span><span class="amount">$40,000</span></div>
+      </div>
+      <div class="card" style="display: flex; flex-direction: column; gap: 16px;">
+        <div>
+          <p style="color: #38bdf8; font-weight: 600; font-size: 14px; margin-bottom: 6px;">Optional additions (D1–D3)</p>
+          <p style="font-size: 14px;">UI refresh + i18n + dark mode: <strong style="color: #f8fafc">$9,500</strong></p>
+          <p style="font-size: 14px; margin-top: 4px; color: #64748b;">Full engagement: $49,500</p>
+        </div>
+        <div>
+          <p style="color: #38bdf8; font-weight: 600; font-size: 14px; margin-bottom: 6px;">Payment milestones</p>
+          <p style="font-size: 13px; color: #94a3b8; line-height: 1.8;">25% on contract · 25% on R4 · 25% on R1+R2 · 25% on close</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 11: Why Us -->
+  <div class="slide">
+    <span class="slide-number">11 / 12</span>
+    <div class="slide-label">Why Us</div>
+    <h2>What makes this engagement different</h2>
+    <div class="why-us">
+      <div class="why-card">
+        <h3>We read the code before pricing</h3>
+        <p>Our quote is based on what's actually in the codebase, not assumptions. No "we'll figure it out" once the contract is signed.</p>
+      </div>
+      <div class="why-card">
+        <h3>Testing is built in, not bolted on</h3>
+        <p>We don't write tests after the fact. They go in alongside every change — that's what makes IT's sign-off stick.</p>
+      </div>
+      <div class="why-card">
+        <h3>We work in your stack</h3>
+        <p>Vue 3, FastAPI, Playwright — no framework migrations, no new dependencies your team doesn't know.</p>
+      </div>
+      <div class="why-card">
+        <h3>Fixed fee means aligned incentives</h3>
+        <p>We don't profit from scope creep. The engagement succeeds when you get everything in scope, on time.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 12: Close -->
+  <div class="slide">
+    <span class="slide-number">12 / 12</span>
+    <div class="slide-label">Next Steps</div>
+    <h2>Let's get the dashboard your team deserves</h2>
+    <div class="grid-3" style="margin-top: 24px; margin-bottom: 32px;">
+      <div class="closing-stat">
+        <div class="number">8</div>
+        <div class="label">weeks to full delivery</div>
+      </div>
+      <div class="closing-stat">
+        <div class="number">$40K</div>
+        <div class="label">fixed fee, required scope</div>
+      </div>
+      <div class="closing-stat">
+        <div class="number">R1–R4</div>
+        <div class="label">all required items covered</div>
+      </div>
+    </div>
+    <p style="text-align: center; color: #64748b; font-size: 15px;">
+      Questions? Contact us at <span style="color: #38bdf8;">proposals@yourfirm.example</span><br>
+      Full written proposal available on request.
+    </p>
+  </div>
+
+</div>
+
+</body>
+</html>
